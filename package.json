@@ -1,0 +1,22 @@
+{
+  "name": "react-cli-version",
+  "version": "1.0.3",
+  "description": "About cli width react",
+  "bin": {
+    "react-cli-version": "./bin/react-cli.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "cn_andy",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.17.1",
+    "download-git-repo": "^1.1.0",
+    "handlebars": "^4.0.11",
+    "inquirer": "^6.2.0",
+    "ora": "^3.0.0"
+  }
+}
