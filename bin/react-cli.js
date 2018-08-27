@@ -23,16 +23,16 @@ const interactionCommand = [
     },
     {
         name: 'template',
-        message: 'Choose template(simple-wepack, ant-design)'
+        message: 'Choose template(simple-webpack, ant-design)'
     }
 ];
 // 用户交互写入模板
-const handleFileChange = answers => {
-    const fileName = `${answers.name}/package.json`;
+const handleFileChange = (answers, name) => {
+    const fileName = `${name}/package.json`;
     const meta = {
-        projectName: answers.name,
-        projectAuthor: answers.author,
-        projectDescription: answers.description
+        projectName: answers.name || '',
+        projectAuthor: answers.author || '',
+        projectDescription: answers.description || ''
     };
     if (fs.existsSync(fileName)) {
         const content = fs.readFileSync(fileName).toString();
@@ -53,8 +53,8 @@ const handleCreateProject = name => {
             }
             else {
                 spinner.succeed();
-                handleFileChange(answers);
-                console.log(chalk.green('cd ' + answers.name + '\nnpm install \nnpm run dev'));
+                handleFileChange(answers, name);
+                console.log(chalk.green('cd ' + name + '\nnpm install \nnpm run dev'));
             }
         });
     });
@@ -63,17 +63,18 @@ const handleCreateProject = name => {
 program.version('1.0.0', '-v, --version')
     .command('init <name>')
     .action(name => {
-        if (!name) {
-            console.log(chalk.red('项目名称必不可少'));
-            return;
-        }
-        else {
+        try {
             if (!fs.existsSync(name)) {
                 handleCreateProject(name);
             }
             else {
                 console.log(chalk.red('项目已经存在'));
                 return;
+            }
+        }
+        catch (e) {
+            if (!name) {
+                throw new Error('初始化的项目文件夹必不可少');
             }
         }
     });
